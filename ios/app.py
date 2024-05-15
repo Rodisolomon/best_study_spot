@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/api/location', methods=['GET'])
 def get_location():
-    # Placeholder: Integrate with Google Map API to get real-time location data
+
     data = request.get_json()
     latitude = data.get('latitude')
     longitude = data.get('longitude')
@@ -18,7 +18,7 @@ def get_location():
 def process_accelerometer_data():
     data = request.get_json()
     # Placeholder: Process accelerometer data to determine if the user has settled
-    settled = True  # Dummy logic for settled state
+    settled = True  
     return jsonify({'status': 'processed', 'settled': settled})
 
 
@@ -26,7 +26,7 @@ def process_accelerometer_data():
 def process_noise_data():
     noise_data = request.get_json()
     # Placeholder: Process noise level data
-    noise_level = noise_data.get('level', 0)  # Example: Extract noise level from the data
+    noise_level = noise_data.get('level', 0)  
     return jsonify({'status': 'received', 'noise_level': noise_level})
 
 
@@ -34,8 +34,8 @@ def process_noise_data():
 def get_crowd_density():
     # Placeholder: Estimate crowd density using local Wi-Fi and Bluetooth signals
     crowd_density = {
-        "level": "high",  # Dummy data for busyness level
-        "count": 50  # Dummy data for number of detected devices
+        "level": "high", 
+        "count": 50  
     }
     return jsonify(crowd_density)
 
