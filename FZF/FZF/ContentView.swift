@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var locationManager: LocationManager
-
     var body: some View {
         VStack {
             if let location = locationManager.userLocation {
@@ -18,8 +17,9 @@ struct ContentView: View {
                 Text("Fetching location...")
             }
         }
-        .onAppear {
-            locationManager.locationManager.requestWhenInUseAuthorization()
-        }
+        
+//        .onAppear {
+//            locationManager.locationManager.requestWhenInUseAuthorization()
+//        }
     }
 }
