@@ -1,0 +1,2 @@
+Google map API key: AIzaSyDUI59SBo58ubrKL6sQzBJo8phEoMfBG4U
+OpenAI API key: sk-proj-p6KGmf5zP6xaJTYMDckfT3BlbkFJbYoGJJi5bbTcMEGnjCRW
