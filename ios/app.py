@@ -22,14 +22,25 @@ def process_accelerometer_data():
 @app.route('/api/environment/noise', methods=['POST'])
 def process_noise_data():
     noise_data = request.get_json()
-    noise_level = noise_data.get('level', 0)
+    average_level = noise_data.get('average_level', 0)
+    highest_level = noise_data.get('highest_level', 0)
+    lowest_level = noise_data.get('lowest_level', 0)
     
     with open('noise_data.json', 'a') as f:
-        json.dump({'noise_level': noise_level}, f)
+        json.dump({
+            'average_level': average_level,
+            'highest_level': highest_level,
+            'lowest_level': lowest_level
+        }, f)
         f.write("\n")
     
-    print(f"Received noise level: {noise_level}")
-    return jsonify({'status': 'received', 'noise_level': noise_level})
+    print(f"Received noise levels: Average: {average_level}, Highest: {highest_level}, Lowest: {lowest_level}")
+    return jsonify({
+        'status': 'received',
+        'average_level': average_level,
+        'highest_level': highest_level,
+        'lowest_level': lowest_level
+    })
 
 @app.route('/api/environment/crowd-density', methods=['GET'])
 def get_crowd_density():
@@ -49,4 +60,4 @@ def submit_feedback():
     return jsonify({'status': 'success', 'message': 'Feedback received', 'rating': rating, 'comments': comments})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
