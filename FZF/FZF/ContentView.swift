@@ -1,25 +1,44 @@
-//
-//  ContentView.swift
-//  FZF
-//
-//  Created by Tracy on 2024/5/13.
-//
-
 import SwiftUI
+import CoreLocation
 
 struct ContentView: View {
     @EnvironmentObject var locationManager: LocationManager
+    @StateObject private var noiseService = NoiseService()
+    @State private var isRecording = false
 
     var body: some View {
-        VStack {
-            if let location = locationManager.userLocation {
-                Text("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
-            } else {
-                Text("Fetching location...")
+        NavigationSplitView {
+            VStack {
+                if let location = locationManager.userLocation {
+                    Text("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
+                } else {
+                    Text("Fetching location...")
+                }
+                
+                Button(action: {
+                    isRecording.toggle()
+                    if isRecording {
+                        noiseService.startRecording()
+                    } else {
+                        noiseService.stopRecording()
+                    }
+                }) {
+                    Text(isRecording ? "Stop Recording Noise" : "Start Recording Noise")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(isRecording ? Color.red : Color.green)
+                        .cornerRadius(8)
+                }
+                .padding()
             }
-        }
-        .onAppear {
-            locationManager.locationManager.requestWhenInUseAuthorization()
+        } detail: {
+            Text("Select an item")
         }
     }
 }
+
+#Preview {
+    ContentView()
+        .environmentObject(LocationManager())
+}
+

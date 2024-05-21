@@ -2,17 +2,14 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-
-@app.route('/api/location', methods=['GET'])
+@app.route('/api/location', methods=['POST'])
 def get_location():
-
     data = request.get_json()
     latitude = data.get('latitude')
     longitude = data.get('longitude')
 
     print(latitude, longitude)
-    return jsonify({'status': 'success', 'message': 'Location received'})
-
+    return jsonify({'status': 'success', 'message': 'Location received', 'latitude': latitude, 'longitude': longitude})
 
 @app.route('/api/location/accelerometer', methods=['POST'])
 def process_accelerometer_data():
@@ -21,14 +18,12 @@ def process_accelerometer_data():
     settled = True  
     return jsonify({'status': 'processed', 'settled': settled})
 
-
 @app.route('/api/environment/noise', methods=['POST'])
 def process_noise_data():
     noise_data = request.get_json()
     # Placeholder: Process noise level data
     noise_level = noise_data.get('level', 0)  
     return jsonify({'status': 'received', 'noise_level': noise_level})
-
 
 @app.route('/api/environment/crowd-density', methods=['GET'])
 def get_crowd_density():
@@ -37,8 +32,7 @@ def get_crowd_density():
         "level": "high", 
         "count": 50  
     }
-    return jsonify(crowd_density)
-
+    return jsonify({'status': 'success', 'crowd_density': crowd_density})
 
 @app.route('/api/user/feedback', methods=['POST'])
 def submit_feedback():
