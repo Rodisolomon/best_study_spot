@@ -57,7 +57,7 @@ class NoiseService: NSObject, ObservableObject {
     }
 
     private func sendNoiseLevel(_ noiseLevel: Int) {
-        guard let url = URL(string: "http://192.168.x.x:5000/api/environment/noise") else { return }  // Replace with your actual IP address
+        guard let url = URL(string: "\(Constants.baseURL)/api/environment/noise") else { return }  
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 

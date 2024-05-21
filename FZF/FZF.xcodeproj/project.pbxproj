@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D34D6112BFD165C00682CC3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D34D6102BFD165C00682CC3 /* Constants.swift */; };
 		2D5260622BF31E6E0007F11F /* FZFApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5260612BF31E6E0007F11F /* FZFApp.swift */; };
 		2D5260642BF31E6E0007F11F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5260632BF31E6E0007F11F /* ContentView.swift */; };
 		2D5260662BF31E710007F11F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D5260652BF31E710007F11F /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		2D34D60F2BFC6C8100682CC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2D34D6102BFD165C00682CC3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2D52605E2BF31E6E0007F11F /* FZF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FZF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D5260612BF31E6E0007F11F /* FZFApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FZFApp.swift; sourceTree = "<group>"; };
 		2D5260632BF31E6E0007F11F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				2D34D60F2BFC6C8100682CC3 /* Info.plist */,
 				2D5260612BF31E6E0007F11F /* FZFApp.swift */,
 				2D5260632BF31E6E0007F11F /* ContentView.swift */,
+				2D34D6102BFD165C00682CC3 /* Constants.swift */,
 				2D5260652BF31E710007F11F /* Assets.xcassets */,
 				2DDA512E2BF53049007A2F6C /* APIs */,
 				2D5260672BF31E710007F11F /* Preview Content */,
@@ -282,6 +285,7 @@
 				2DDA51302BF53067007A2F6C /* LocationFetching.swift in Sources */,
 				2DDA51322BF5307C007A2F6C /* Accelerometer.swift in Sources */,
 				2D5260642BF31E6E0007F11F /* ContentView.swift in Sources */,
+				2D34D6112BFD165C00682CC3 /* Constants.swift in Sources */,
 				2DDA51342BF53092007A2F6C /* NoiseLevel.swift in Sources */,
 				2D5260622BF31E6E0007F11F /* FZFApp.swift in Sources */,
 				2DDA51362BF530A2007A2F6C /* UserFeedback.swift in Sources */,
@@ -448,11 +452,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FZF/Preview Content\"";
-<<<<<<< HEAD
 				DEVELOPMENT_TEAM = KZ6NMDR7RB;
-=======
-				DEVELOPMENT_TEAM = BHHPAH5M24;
->>>>>>> c4fbeabe805ad3082ab67233c75c3af05b48fa4e
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FZF/Info.plist;
@@ -483,11 +483,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FZF/Preview Content\"";
-<<<<<<< HEAD
 				DEVELOPMENT_TEAM = KZ6NMDR7RB;
-=======
-				DEVELOPMENT_TEAM = BHHPAH5M24;
->>>>>>> c4fbeabe805ad3082ab67233c75c3af05b48fa4e
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FZF/Info.plist;

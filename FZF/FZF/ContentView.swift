@@ -3,12 +3,9 @@ import CoreLocation
 
 struct ContentView: View {
     @EnvironmentObject var locationManager: LocationManager
-<<<<<<< HEAD
     @StateObject private var noiseService = NoiseService()
     @State private var isRecording = false
 
-=======
->>>>>>> c4fbeabe805ad3082ab67233c75c3af05b48fa4e
     var body: some View {
         NavigationSplitView {
             VStack {
@@ -34,17 +31,9 @@ struct ContentView: View {
                 }
                 .padding()
             }
-<<<<<<< HEAD
         } detail: {
             Text("Select an item")
         }
-=======
-        }
-        
-//        .onAppear {
-//            locationManager.locationManager.requestWhenInUseAuthorization()
-//        }
->>>>>>> c4fbeabe805ad3082ab67233c75c3af05b48fa4e
     }
 }
 

@@ -29,8 +29,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     private func sendLocation(latitude: Double, longitude: Double) {
-        // change this url to match the server address 
-        guard let url = URL(string: "http://127.0.0.1:5000/api/location") else { return }
+        guard let url = URL(string: "\(Constants.baseURL)/api/location") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 
