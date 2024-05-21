@@ -4,6 +4,7 @@
 //
 //  Created by Tracy on 2024/5/15.
 //
+
 import Foundation
 import AVFoundation
 
@@ -56,7 +57,7 @@ class NoiseService: NSObject, ObservableObject {
     }
 
     private func sendNoiseLevel(_ noiseLevel: Int) {
-        guard let url = URL(string: "http://yourserver.com:5000/api/environment/noise") else { return }
+        guard let url = URL(string: "http://192.168.x.x:5000/api/environment/noise") else { return }  // Replace with your actual IP address
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
 

@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import json
 
 app = Flask(__name__)
 
@@ -21,8 +22,13 @@ def process_accelerometer_data():
 @app.route('/api/environment/noise', methods=['POST'])
 def process_noise_data():
     noise_data = request.get_json()
-    # Placeholder: Process noise level data
-    noise_level = noise_data.get('level', 0)  
+    noise_level = noise_data.get('level', 0)
+    
+    with open('noise_data.json', 'a') as f:
+        json.dump({'noise_level': noise_level}, f)
+        f.write("\n")
+    
+    print(f"Received noise level: {noise_level}")
     return jsonify({'status': 'received', 'noise_level': noise_level})
 
 @app.route('/api/environment/crowd-density', methods=['GET'])
