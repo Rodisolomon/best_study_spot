@@ -1,3 +1,7 @@
 nltk
 pytorch
 openai
+numpy
+json
+math
+pandas
