@@ -6,40 +6,26 @@
 //
 
 import Foundation
+import CoreMotion
 
 class AccelerometerService {
-    func processAccelerometerData(data: [String: Any], completion: @escaping (Result<Bool, Error>) -> Void) {
-        guard let url = URL(string: "http://yourserver.com/api/location/accelerometer") else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let jsonData = try? JSONSerialization.data(withJSONObject: data)
-        request.httpBody = jsonData
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
-                return
-            }
-            
-            do {
-                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let settled = jsonResponse["settled"] as? Bool {
-                    completion(.success(settled))
-                } else {
-                    completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
-                }
-            } catch let parsingError {
-                completion(.failure(parsingError))
+    private var motionManager = CMMotionManager()
+    var motionDetected: ((Bool) -> Void)?
+
+    func startAccelerometerUpdates() {
+        if motionManager.isAccelerometerAvailable {
+            motionManager.accelerometerUpdateInterval = 2
+            motionManager.startAccelerometerUpdates(to: .main) { [weak self] data, error in
+                guard let self = self, let data = data else { return }
+                
+                let isMoving = abs(data.acceleration.x) > 0.5 || abs(data.acceleration.y) > 0.5 || abs(data.acceleration.z) > 1.5
+                print("Acceleration X: \(data.acceleration.x), Y: \(data.acceleration.y), Z: \(data.acceleration.z), Is Moving: \(isMoving)") // Debug print
+                self.motionDetected?(isMoving)
             }
         }
-        
-        task.resume()
+    }
+
+    func stopAccelerometerUpdates() {
+        motionManager.stopAccelerometerUpdates()
     }
 }

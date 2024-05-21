@@ -4,6 +4,7 @@
 //
 //  Created by Tracy on 2024/5/15.
 //
+
 import Foundation
 import CoreLocation
 
@@ -51,8 +52,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             }
 
             print("Location sent successfully")
-        }
-
+    }
         task.resume()
     }
 }

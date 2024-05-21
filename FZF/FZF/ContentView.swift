@@ -4,7 +4,7 @@ import CoreLocation
 struct ContentView: View {
     @EnvironmentObject var locationManager: LocationManager
     @StateObject private var noiseService = NoiseService()
-    @State private var isRecording = false
+    @State private var isStudying = false
 
     var body: some View {
         NavigationSplitView {
@@ -16,24 +16,42 @@ struct ContentView: View {
                 }
                 
                 Button(action: {
-                    isRecording.toggle()
-                    if isRecording {
-                        noiseService.startRecording()
+                    isStudying.toggle()
+                    if isStudying {
+                        startStudying()
                     } else {
-                        noiseService.stopRecording()
+                        stopStudying()
                     }
                 }) {
-                    Text(isRecording ? "Stop Recording Noise" : "Start Recording Noise")
+                    Text(isStudying ? "Stop Studying" : "Start Studying")
                         .foregroundColor(.white)
                         .padding()
-                        .background(isRecording ? Color.red : Color.green)
+                        .background(isStudying ? Color.red : Color.green)
                         .cornerRadius(8)
                 }
                 .padding()
+
+                if noiseService.isSensing {
+                    Text("Sensing Noise...")
+                        .foregroundColor(.red)
+                } else {
+                    Text("Not Sensing")
+                        .foregroundColor(.green)
+                }
             }
         } detail: {
             Text("Select an item")
         }
+    }
+    
+    private func startStudying() {
+        noiseService.accelerometerService.startAccelerometerUpdates()
+        noiseService.startSensingCycle()
+    }
+    
+    private func stopStudying() {
+        noiseService.stopSensingCycle()
+        noiseService.accelerometerService.stopAccelerometerUpdates()
     }
 }
 
@@ -41,4 +59,3 @@ struct ContentView: View {
     ContentView()
         .environmentObject(LocationManager())
 }
-
