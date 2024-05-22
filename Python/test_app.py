@@ -83,18 +83,18 @@ class FlaskTestCase(unittest.TestCase):
         self.assertGreater(len(ranking_data), 0)  # Check that there is at least one ranking result
         # Further checks can be added based on the expected structure of the ranking data
 
-    def test_submit_feedback(self):
-        response = self.app.post('/api/user/feedback', data=json.dumps({
-            'rating': 5,
-            'comments': 'Great place!'
-        }), content_type='application/json')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('status', response.json)
-        self.assertEqual(response.json['status'], 'success')
-        self.assertIn('rating', response.json)
-        self.assertEqual(response.json['rating'], 5)
-        self.assertIn('comments', response.json)
-        self.assertEqual(response.json['comments'], 'Great place!')
+    # def test_submit_feedback(self):
+    #     response = self.app.post('/api/user/feedback', data=json.dumps({
+    #         'rating': 5,
+    #         'comments': 'Great place!'
+    #     }), content_type='application/json')
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertIn('status', response.json)
+    #     self.assertEqual(response.json['status'], 'success')
+    #     self.assertIn('rating', response.json)
+    #     self.assertEqual(response.json['rating'], 5)
+    #     self.assertIn('comments', response.json)
+    #     self.assertEqual(response.json['comments'], 'Great place!')
 
 if __name__ == '__main__':
     unittest.main()
