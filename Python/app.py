@@ -18,13 +18,6 @@ def get_location():
     location_data['longitude'] = longitude
     return jsonify({'status': 'success', 'message': 'Location received', 'latitude': latitude, 'longitude': longitude})
 
-@app.route('/api/location/accelerometer', methods=['POST'])
-def process_accelerometer_data():
-    data = request.get_json()
-    # Placeholder: Process accelerometer data to determine if the user has settled
-    settled = True  
-    return jsonify({'status': 'processed', 'settled': settled})
-
 @app.route('/api/environment/noise', methods=['POST'])
 def process_noise_data():
     noise_data = request.get_json()
@@ -80,6 +73,14 @@ def submit_feedback():
                                 file_name 
                                 )
     return feedback
+
+
+@app.route('/api/preference', methods=['POST'])
+def submit_preference():
+    preference = request.get_json()
+    
+    print(preference)
+    return preference
 
 
 @app.route('/api/ranking', methods=['GET'])
