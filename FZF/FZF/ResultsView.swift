@@ -157,14 +157,14 @@ class NetworkManager: ObservableObject {
             })
     }
 
-    func sendSelectedAddress(_ address: String, completion: @escaping (Bool) -> Void) {
+    func sendSelectedAddress(name: String, address: String, completion: @escaping (Bool) -> Void) {
         guard let url = URL(string: "\(Constants.baseURL)/api/choosen-address") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let body: [String: Any] = ["address": address]
+        let body: [String: Any] = ["name": name, "address": address]
         guard let httpBody = try? JSONSerialization.data(withJSONObject: body, options: []) else { return }
         request.httpBody = httpBody
 
@@ -220,7 +220,7 @@ struct ResultsView: View {
                 }
             }
 
-            Spacer() // Adds space between the list and the bottom
+            Spacer()
         }
         .onAppear {
             networkManager.fetchRankings()
@@ -230,7 +230,7 @@ struct ResultsView: View {
                 title: Text("Location Selected"),
                 message: Text("You have selected \(ranking.name)"),
                 primaryButton: .default(Text("LetsGO"), action: {
-                    networkManager.sendSelectedAddress(ranking.address) { success in
+                    networkManager.sendSelectedAddress(name: ranking.name, address: ranking.address) { success in
                         if success {
                             DispatchQueue.main.async {
                                 selectedTab = .study

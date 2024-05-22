@@ -103,10 +103,11 @@ def generate_ranking():
 def chosen_address():
     global current_address
     data = request.get_json()
+    current_name = data.get('name')
     current_address = data.get('address')
 
-    print(f"Received address: {current_address}")
-    return current_address
+    print(f"Received name: {current_name}, address: {current_address}")
+    return jsonify({'status': 'success', 'name': current_name, 'address': current_address}), 200
 
 
 if __name__ == '__main__':
