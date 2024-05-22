@@ -1,8 +1,8 @@
 //
 //  ResultsView.swift
-//  focus_zone_finder
+//  FZF
 //
-//  Created by 天豪刘 on 2024-05-21.
+//  Created by Tracy on 2024/5/21.
 //
 
 import SwiftUI
@@ -23,14 +23,14 @@ struct ResultsView: View {
 
             Spacer() // Adds space between the list and the button
 
-            NavigationLink(destination: StudyView()) {
-                Text("Continue")
-                    .foregroundColor(.white)
-                    .frame(width: 280, height: 50)
-                    .background(Color.green)
-                    .cornerRadius(10)
-            }
-            .padding(.bottom, 20) // Adds padding at the bottom of the button
+//            NavigationLink(destination: MainTabView()) {
+//                Text("Continue")
+//                    .foregroundColor(.white)
+//                    .frame(width: 280, height: 50)
+//                    .background(Color.teal)
+//                    .cornerRadius(10)
+//            }
+//            .padding(.bottom, 20)
         }
         .navigationBarTitle("Focus Zones Found!", displayMode: .inline)
     }

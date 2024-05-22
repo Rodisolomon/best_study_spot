@@ -18,7 +18,7 @@ struct SearchView: View {
             NavigationLink("Search for study zone", destination: ResultsView())
                 .foregroundColor(.white)
                 .padding()
-                .background(Color.green)
+                .background(Color.teal)
                 .cornerRadius(10)
 
             Spacer()

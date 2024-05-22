@@ -49,8 +49,7 @@ struct PreferencesView: View {
 
                 Stepper("Maximum Distance: \(maxDistance, specifier: "%.1f") km", value: $maxDistance, in: 0...10, step: 0.5)
             }
-
-            NavigationLink("Save & Continue", destination: SearchView())
+            
         }
         .navigationBarTitle("Preferences")
     }

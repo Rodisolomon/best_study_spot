@@ -1,12 +1,13 @@
 //
-//  ContentView.swift
-//  focus_zone_finder
+//  TabView.swift
+//  FZF
 //
 //  Created by Tracy on 2024/5/21.
 //
+
 import SwiftUI
 
-struct ContentView: View {
+struct MainTabView: View {
     var body: some View {
         TabView {
             NavigationView {
@@ -36,8 +37,9 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct MainTabView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainTabView()
     }
 }
+

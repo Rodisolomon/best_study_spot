@@ -12,7 +12,7 @@ struct FocusZoneFinderApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                PreferencesView()
+                ContentView()
             }
         }
     }

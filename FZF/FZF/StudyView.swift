@@ -14,7 +14,7 @@
 //                } else {
 //                    Text("Fetching location...")
 //                }
-//                
+//
 //                Button(action: {
 //                    isStudying.toggle()
 //                    if isStudying {
@@ -43,12 +43,12 @@
 //            Text("Select an item")
 //        }
 //    }
-//    
+//
 //    private func startStudying() {
 //        noiseService.accelerometerService.startAccelerometerUpdates()
 //        noiseService.startSensingCycle()
 //    }
-//    
+//
 //    private func stopStudying() {
 //        noiseService.stopSensingCycle()
 //        noiseService.accelerometerService.stopAccelerometerUpdates()
@@ -62,7 +62,7 @@
 import SwiftUI
 import CoreLocation
 
-struct ContentView: View {
+struct StudyView: View {
     @EnvironmentObject var locationManager: LocationManager
     @StateObject private var noiseService = NoiseService()
     @State private var isFocusing: Bool = false
@@ -164,6 +164,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    StudyView()
         .environmentObject(LocationManager())
 }
