@@ -17,6 +17,7 @@ def test_initial_ranking(user_location, file_name, number):
 def test_single_user_update(user_location, original_ranking, user_feedback, file_name):
     storage_file_name = 'all_places_chicago_temp.json'
     ranking.update_personal_ranking(original_ranking[0]['address'], 
+                            original_ranking[0]['name'],        
                             user_feedback, 
                             file_name,
                             storage_file_name=storage_file_name
