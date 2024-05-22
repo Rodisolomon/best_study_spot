@@ -4,10 +4,11 @@
 //
 //  Created by 天豪刘 on 2024-05-21.
 //
-
 import SwiftUI
 
 struct SearchView: View {
+    @Binding var selectedTab: MainTabView.Tab
+
     var body: some View {
         VStack {
             Spacer(minLength: 10)
@@ -15,11 +16,13 @@ struct SearchView: View {
                 .font(.title)
                 .padding()
 
-            NavigationLink("Search for study zone", destination: ResultsView())
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.teal)
-                .cornerRadius(10)
+            NavigationLink(destination: ResultsView(selectedTab: $selectedTab)) {
+                Text("Search for study zone")
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.teal)
+                    .cornerRadius(10)
+            }
 
             Spacer()
         }
@@ -29,6 +32,7 @@ struct SearchView: View {
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        SearchView(selectedTab: .constant(.search))
+            .environmentObject(LocationManager())
     }
 }

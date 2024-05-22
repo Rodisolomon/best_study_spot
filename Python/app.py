@@ -55,27 +55,27 @@ def get_crowd_density():
     }
     return jsonify({'status': 'success', 'crowd_density': crowd_density})
 
-@app.route('/api/user/feedback', methods=['POST'])
+@app.route('/api/feedback', methods=['POST'])
 def submit_feedback():
-    pass
-    # #TODO: change passed back data to the style of {'general_score': 0~5 int, 'noise_level' 0~5 int, "spaciousness" 0~5 int}
+    feedback_data = request.get_json()
 
-    # feedback_data = request.get_json()
-    # # Placeholder: Save feedback data to the database
-    # rating = feedback_data.get('rating')
-    # comments = feedback_data.get('comments', '')
-    
-    # # Update the ranking based on feedback
-    # ranking.update_ranking_with_feedback(feedback_data)
-    
-    # # Generate new ranking
-    # global location_data
-    # if 'latitude' not in location_data or 'longitude' not in location_data:
-    #     return jsonify({'status': 'error', 'message': 'Location data not available'})
-    
-    # new_ranking = ranking.generate_ranking((location_data['latitude'], location_data['longitude']), file_name)
-    
-    # return jsonify({'status': 'success', 'message': 'Feedback received and ranking updated', 'rating': rating, 'comments': comments, 'new_ranking': new_ranking})
+    try:
+        general_score = int(feedback_data.get('generalScore'))
+        noise_level = int(feedback_data.get('noiseLevel'))
+        spaciousness = int(feedback_data.get('spaciousness'))
+    except (TypeError, ValueError):
+        return jsonify({'status': 'error', 'message': 'Invalid feedback data'}), 400
+
+    feedback = {
+        'general_score': general_score,
+        'noise_level': noise_level,
+        'spaciousness': spaciousness
+    }
+    print(feedback)
+
+    return feedback
+
+
 
 
 @app.route('/api/ranking', methods=['GET'])

@@ -110,7 +110,7 @@ struct StudyView: View {
                     .foregroundColor(.white)
                     .padding()
                     .frame(width: 200, height: 50)
-                    .background(Color.green)
+                    .background(Color.teal)
                     .cornerRadius(10)
                 }
 
@@ -120,7 +120,7 @@ struct StudyView: View {
                         .foregroundColor(.red)
                 } else {
                     Text("Not Sensing")
-                        .foregroundColor(.green)
+                        .foregroundColor(.teal)
                 }
                 
                 NavigationLink(destination: FeedbackView(), isActive: $showFeedbackView) {

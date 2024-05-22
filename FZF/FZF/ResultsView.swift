@@ -100,7 +100,6 @@
 import SwiftUI
 import Combine
 
-// Model to represent each ranking result
 struct RankingResult: Codable, Identifiable {
     var id: UUID = UUID()
     var name: String
@@ -127,13 +126,13 @@ struct RankingResult: Codable, Identifiable {
     }
 }
 
-// Model to represent the API response
+// RankingsResponse.swift content
 struct RankingsResponse: Codable {
     var status: String
     var ranking: [RankingResult]
 }
 
-// Network manager to fetch data from the backend and send selected address
+// NetworkManager.swift content
 class NetworkManager: ObservableObject {
     @Published var rankings: [RankingResult] = []
 
@@ -158,7 +157,7 @@ class NetworkManager: ObservableObject {
             })
     }
 
-    func sendSelectedAddress(_ address: String) {
+    func sendSelectedAddress(_ address: String, completion: @escaping (Bool) -> Void) {
         guard let url = URL(string: "\(Constants.baseURL)/api/choosen-address") else { return }
 
         var request = URLRequest(url: url)
@@ -172,23 +171,28 @@ class NetworkManager: ObservableObject {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error sending address: \(error)")
+                completion(false)
                 return
             }
 
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
                 print("Invalid response")
+                completion(false)
                 return
             }
 
             print("Address sent successfully")
+            completion(true)
         }.resume()
     }
 }
 
-// ResultsView to display the fetched data and handle item selection
+// ResultsView.swift content
 struct ResultsView: View {
     @StateObject private var networkManager = NetworkManager()
     @State private var selectedRanking: RankingResult?
+    @Binding var selectedTab: MainTabView.Tab
+    @EnvironmentObject var locationManager: LocationManager // Add this line to get the LocationManager from the environment
 
     var body: some View {
         VStack {
@@ -212,7 +216,6 @@ struct ResultsView: View {
                     .padding(.vertical, 5)
                     .onTapGesture {
                         selectedRanking = ranking
-                        networkManager.sendSelectedAddress(ranking.address)
                     }
                 }
             }
@@ -222,17 +225,28 @@ struct ResultsView: View {
         .onAppear {
             networkManager.fetchRankings()
         }
-        .navigationBarTitle("Focus Zones Found!", displayMode: .inline)
         .alert(item: $selectedRanking) { ranking in
-            Alert(title: Text("Location Selected"),
-                  message: Text("You have selected \(ranking.name)"),
-                  dismissButton: .default(Text("OK")))
+            Alert(
+                title: Text("Location Selected"),
+                message: Text("You have selected \(ranking.name)"),
+                primaryButton: .default(Text("Go"), action: {
+                    networkManager.sendSelectedAddress(ranking.address) { success in
+                        if success {
+                            DispatchQueue.main.async {
+                                selectedTab = .study
+                            }
+                        }
+                    }
+                }),
+                secondaryButton: .cancel()
+            )
         }
     }
 }
 
 struct ResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        ResultsView()
+        ResultsView(selectedTab: .constant(.search))
+            .environmentObject(LocationManager()) // Ensure LocationManager is available in the environment
     }
 }
