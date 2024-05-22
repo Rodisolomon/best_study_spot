@@ -78,7 +78,7 @@ def submit_feedback():
     # return jsonify({'status': 'success', 'message': 'Feedback received and ranking updated', 'rating': rating, 'comments': comments, 'new_ranking': new_ranking})
 
 
-@app.route('/api/ranking', methods=['POST'])
+@app.route('/api/ranking', methods=['GET'])
 def generate_ranking():
     global location_data
     if 'latitude' not in location_data or 'longitude' not in location_data:
