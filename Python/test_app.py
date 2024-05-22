@@ -1,6 +1,6 @@
 import unittest
 import json
-from app import app, location_data  # Import the app and location_data
+from app import app, location_data, current_address  # Import the app and location_data
 
 class FlaskTestCase(unittest.TestCase):
 
@@ -32,7 +32,7 @@ class FlaskTestCase(unittest.TestCase):
     def test_process_and_return_data_with_location(self):
         global location_data
         location_data = {'latitude': 37.7749, 'longitude': -122.4194}
-        response = self.app.post('/api/ranking', data=json.dumps({
+        response = self.app.get('/api/ranking', data=json.dumps({
             'input_data': 'sample input'
         }), content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -72,7 +72,7 @@ class FlaskTestCase(unittest.TestCase):
     def test_ranking_data(self):
         global location_data
         location_data = {'latitude': 37.7749, 'longitude': -122.4194}
-        response = self.app.post('/api/ranking', data=json.dumps({
+        response = self.app.get('/api/ranking', data=json.dumps({
             'input_data': 'sample input'
         }), content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -83,18 +83,25 @@ class FlaskTestCase(unittest.TestCase):
         self.assertGreater(len(ranking_data), 0)  # Check that there is at least one ranking result
         # Further checks can be added based on the expected structure of the ranking data
 
-    # def test_submit_feedback(self):
-    #     response = self.app.post('/api/user/feedback', data=json.dumps({
-    #         'rating': 5,
-    #         'comments': 'Great place!'
-    #     }), content_type='application/json')
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIn('status', response.json)
-    #     self.assertEqual(response.json['status'], 'success')
-    #     self.assertIn('rating', response.json)
-    #     self.assertEqual(response.json['rating'], 5)
-    #     self.assertIn('comments', response.json)
-    #     self.assertEqual(response.json['comments'], 'Great place!')
+    def test_submit_feedback(self):
+        # Set the current address for feedback submission
+        global current_address
+        current_address = "1174 East 55th Street, Chicago"
+
+        # Test feedback data
+        feedback_data = {
+            'generalScore': 4,
+            'noiseLevel': 3,
+            'spaciousness': 2
+        }
+
+        # Submit the feedback
+        response = self.app.post('/api/feedback', data=json.dumps(feedback_data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('general_score', response.json)
+        self.assertIn('noise_level', response.json)
+        self.assertIn('spaciousness', response.json)
+
 
 if __name__ == '__main__':
     unittest.main()

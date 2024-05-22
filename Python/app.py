@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import json
 import ranking  # Make sure this module is properly imported
 location_data = {}
+current_address = None
+feedback = {}
 file_name = "all_places_chicago.json"
 
 app = Flask(__name__)
@@ -57,8 +59,9 @@ def get_crowd_density():
 
 @app.route('/api/feedback', methods=['POST'])
 def submit_feedback():
+    global feedback
+    global current_address
     feedback_data = request.get_json()
-
     try:
         general_score = int(feedback_data.get('generalScore'))
         noise_level = int(feedback_data.get('noiseLevel'))
@@ -72,10 +75,11 @@ def submit_feedback():
         'spaciousness': spaciousness
     }
     print(feedback)
-
+    ranking.update_personal_ranking(current_address, 
+                                feedback, 
+                                file_name 
+                                )
     return feedback
-
-
 
 
 @app.route('/api/ranking', methods=['GET'])
@@ -96,11 +100,12 @@ def generate_ranking():
 
 @app.route('/api/choosen-address', methods=['POST'])
 def chosen_address():
+    global current_address
     data = request.get_json()
-    address = data.get('address')
+    current_address = data.get('address')
 
-    print(f"Received address: {address}")
-    return address
+    print(f"Received address: {current_address}")
+    return current_address
 
 
 if __name__ == '__main__':
