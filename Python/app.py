@@ -1,15 +1,19 @@
 from flask import Flask, request, jsonify
 import json
+import ranking  # Make sure this module is properly imported
+location_data = {}
+file_name = "all_places_chicago.json"
 
 app = Flask(__name__)
 
 @app.route('/api/location', methods=['POST'])
 def get_location():
+    global location_data  # Access the global variable
     data = request.get_json()
     latitude = data.get('latitude')
     longitude = data.get('longitude')
-
-    print(latitude, longitude)
+    location_data['latitude'] = latitude
+    location_data['longitude'] = longitude
     return jsonify({'status': 'success', 'message': 'Location received', 'latitude': latitude, 'longitude': longitude})
 
 @app.route('/api/location/accelerometer', methods=['POST'])
@@ -53,11 +57,42 @@ def get_crowd_density():
 
 @app.route('/api/user/feedback', methods=['POST'])
 def submit_feedback():
+    pass
+    #TODO: change passed back data to the style of {'general_score': 0~5 int, 'noise_level' 0~5 int, "spaciousness" 0~5 int}
+
     feedback_data = request.get_json()
     # Placeholder: Save feedback data to the database
     rating = feedback_data.get('rating')
     comments = feedback_data.get('comments', '')
-    return jsonify({'status': 'success', 'message': 'Feedback received', 'rating': rating, 'comments': comments})
+    
+    # Update the ranking based on feedback
+    ranking.update_ranking_with_feedback(feedback_data)
+    
+    # Generate new ranking
+    global location_data
+    if 'latitude' not in location_data or 'longitude' not in location_data:
+        return jsonify({'status': 'error', 'message': 'Location data not available'})
+    
+    new_ranking = ranking.generate_ranking((location_data['latitude'], location_data['longitude']), file_name)
+    
+    return jsonify({'status': 'success', 'message': 'Feedback received and ranking updated', 'rating': rating, 'comments': comments, 'new_ranking': new_ranking})
+
+
+@app.route('/api/ranking', methods=['POST'])
+def generate_ranking():
+    global location_data
+    if 'latitude' not in location_data or 'longitude' not in location_data:
+        return jsonify({'status': 'error', 'message': 'Location data not available'})
+    
+    # Pass the location data to the ranking function
+    raw_ranking_result = ranking.generate_ranking((location_data['latitude'], location_data['longitude']), file_name)
+    ranking_result = []
+    maximum_score = destination[0]['score']
+    for destination in raw_ranking_result:
+        percentage_score = destination['score']/maximum_score*100
+        ranking_result.append({'name':destination['name'], 'address':destination['address'], 'fitness':f"{percentage_score:.2f}"})
+
+    return jsonify({'status': 'success', 'ranking': ranking_result})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

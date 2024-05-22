@@ -25,7 +25,7 @@ def test_single_user_update(user_location, original_ranking, user_feedback, file
     print(f"with user feedback {user_feedback}...")
     for destination in new_ranking:
         print(f"{destination['name']} has score {destination['score']}" )
-    os.remove(f"Data/{storage_file_name}")
+    os.remove(f"ranking_data/{storage_file_name}")
 
 
 def test_update_personal_rankings(user_location, file_name):

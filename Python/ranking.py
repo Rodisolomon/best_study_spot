@@ -56,9 +56,9 @@ def generate_ranking(user_location: tuple, file_name:str, number: int = 5) -> li
     """
     generate ranking based on user preference and current objective score
     """
-    with open(f'Data/property_weights.json', 'r') as file:
+    with open(f'ranking_data/property_weights.json', 'r') as file:
         property_weights = json.load(file)
-    with open(f'Data/{file_name}', 'r') as file:
+    with open(f'ranking_data/{file_name}', 'r') as file:
         destinations = json.load(file)
     to_be_remove = []
     for i, destination in enumerate(destinations):
@@ -94,7 +94,7 @@ def update_personal_ranking(address: str,
         spaciousness/crowdeness: int from 0-5
         }
     """
-    with open(f'Data/{file_name}', 'r') as file:
+    with open(f'ranking_data/{file_name}', 'r') as file:
         destinations = json.load(file)
     for i in range(len(destinations)):
         if destinations[i]['address'] == address:
@@ -103,10 +103,10 @@ def update_personal_ranking(address: str,
             destinations[i]['label']['user_score'] = user_feedback['general_score']
             break
     if storage_file_name:
-        with open(f'Data/{storage_file_name}', 'w') as file:
+        with open(f'ranking_data/{storage_file_name}', 'w') as file:
             json.dump(destinations, file)
     else:
-        with open(f'Data/{file_name}', 'w') as file:
+        with open(f'ranking_data/{file_name}', 'w') as file:
             json.dump(destinations, file)
 
     
