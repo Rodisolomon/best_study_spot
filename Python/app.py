@@ -94,5 +94,14 @@ def generate_ranking():
 
     return jsonify({'status': 'success', 'ranking': ranking_result})
 
+@app.route('/api/choosen-address', methods=['POST'])
+def chosen_address():
+    data = request.get_json()
+    address = data.get('address')
+
+    print(f"Received address: {address}")
+    return address
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

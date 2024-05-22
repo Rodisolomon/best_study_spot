@@ -14,6 +14,7 @@
 		2D5260732BF31E720007F11F /* FZFTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D5260722BF31E720007F11F /* FZFTests.swift */; };
 		2D52607D2BF31E720007F11F /* FZFUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D52607C2BF31E720007F11F /* FZFUITests.swift */; };
 		2D52607F2BF31E720007F11F /* FZFUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D52607E2BF31E720007F11F /* FZFUITestsLaunchTests.swift */; };
+		2DB2D11E2BFD8A8100CE3ED0 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DB2D11D2BFD8A8100CE3ED0 /* FeedbackView.swift */; };
 		2DD30B8C2BFD6D12003ADA9B /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD30B8B2BFD6D12003ADA9B /* ResultsView.swift */; };
 		2DD30B8E2BFD6F48003ADA9B /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD30B8D2BFD6F48003ADA9B /* SearchView.swift */; };
 		2DD30B902BFD6FA1003ADA9B /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD30B8F2BFD6FA1003ADA9B /* PreferencesView.swift */; };
@@ -54,6 +55,7 @@
 		2D5260782BF31E720007F11F /* FZFUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FZFUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D52607C2BF31E720007F11F /* FZFUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FZFUITests.swift; sourceTree = "<group>"; };
 		2D52607E2BF31E720007F11F /* FZFUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FZFUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2DB2D11D2BFD8A8100CE3ED0 /* FeedbackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		2DD30B8B2BFD6D12003ADA9B /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		2DD30B8D2BFD6F48003ADA9B /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		2DD30B8F2BFD6FA1003ADA9B /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				2D34D60F2BFC6C8100682CC3 /* Info.plist */,
+				2DB2D11D2BFD8A8100CE3ED0 /* FeedbackView.swift */,
 				2D5260612BF31E6E0007F11F /* FZFApp.swift */,
 				2D34D6102BFD165C00682CC3 /* Constants.swift */,
 				2DD30B8B2BFD6D12003ADA9B /* ResultsView.swift */,
@@ -299,6 +302,7 @@
 				2DD30B8E2BFD6F48003ADA9B /* SearchView.swift in Sources */,
 				2DD30B8C2BFD6D12003ADA9B /* ResultsView.swift in Sources */,
 				2DDA51322BF5307C007A2F6C /* Accelerometer.swift in Sources */,
+				2DB2D11E2BFD8A8100CE3ED0 /* FeedbackView.swift in Sources */,
 				2DD30B902BFD6FA1003ADA9B /* PreferencesView.swift in Sources */,
 				2D34D6112BFD165C00682CC3 /* Constants.swift in Sources */,
 				2DD30B922BFD7074003ADA9B /* StudyView.swift in Sources */,
