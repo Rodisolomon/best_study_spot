@@ -8,7 +8,8 @@
 import Foundation
 
 struct Constants {
-    static let baseURL = "http://10.151.114.27:5001" //tracy's laptop ip
+    //static let baseURL = "http://10.151.114.27:5001" //jcl
+    static let baseURL = "http://10.0.0.115:5001" //home
     // for laptop simulator
     // static let baseURL = "http://localhost:5000"
 }
