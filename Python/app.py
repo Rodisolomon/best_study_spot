@@ -2,9 +2,11 @@ from flask import Flask, request, jsonify
 import json
 import ranking  # Make sure this module is properly imported
 location_data = {}
-current_address = None
+current_address_name = {}
 feedback = {}
 file_name = "all_places_chicago.json"
+preference = {'noiseLevel': 'High', 'canCollaborate': True, 'studentExclusive': False, 'maxDistance': 5, 'spaceSize': 'Small', 'mustHaveNetwork': False}
+
 
 app = Flask(__name__)
 
@@ -52,7 +54,7 @@ def get_crowd_density():
 
 @app.route('/api/feedback', methods=['POST'])
 def submit_feedback():
-    global current_address
+    global current_address_name
     global feedback
     feedback_data = request.get_json()
     try:
@@ -68,7 +70,8 @@ def submit_feedback():
         'spaciousness': spaciousness
     }
     print(feedback)
-    ranking.update_personal_ranking(current_address, 
+    ranking.update_personal_ranking(current_address_name['address'], 
+                                current_address_name['name'],
                                 feedback, 
                                 file_name 
                                 )
@@ -77,8 +80,8 @@ def submit_feedback():
 
 @app.route('/api/preference', methods=['POST'])
 def submit_preference():
+    global preference
     preference = request.get_json()
-    
     print(preference)
     return preference
 
@@ -86,11 +89,12 @@ def submit_preference():
 @app.route('/api/ranking', methods=['GET'])
 def generate_ranking():
     global location_data
+    global preference
     if 'latitude' not in location_data or 'longitude' not in location_data:
         return jsonify({'status': 'error', 'message': 'Location data not available'})
     
     # Pass the location data to the ranking function
-    raw_ranking_result = ranking.generate_ranking((location_data['latitude'], location_data['longitude']), file_name)
+    raw_ranking_result = ranking.generate_ranking((location_data['latitude'], location_data['longitude']), file_name, user_preference=preference)
     ranking_result = []
     maximum_score = raw_ranking_result[0]['score']
     for destination in raw_ranking_result:
@@ -101,11 +105,11 @@ def generate_ranking():
 
 @app.route('/api/choosen-address', methods=['POST'])
 def chosen_address():
-    global current_address
+    global current_address_name
     data = request.get_json()
     current_name = data.get('name')
     current_address = data.get('address')
-
+    current_address_name = {'name': current_name, 'address': current_address}
     print(f"Received name: {current_name}, address: {current_address}")
     return jsonify({'status': 'success', 'name': current_name, 'address': current_address}), 200
 

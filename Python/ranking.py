@@ -34,6 +34,7 @@ def calculate_score(location: tuple, place_info: dict, property_weights:dict) ->
     based on property weights and user location, calcualte the score for users
     """
     property_presence = copy.deepcopy(place_info['label'])
+    # print(place_info['name'], property_presence)
     if 'user_score' in property_presence:
         property_presence.pop('user_score')
     # Calculate property score
@@ -81,7 +82,7 @@ def filter_destination(user_location: tuple, user_preference:dict, destinations:
         if user_preference.get('I want to collaborate') and not destination['label'].get('collaborate', False):
             continue
 
-        if user_preference.get('Must have wi-fi') and not destination['label'].get('wi-fi', False):
+        if user_preference.get('Must have wi-fi') and destination['label'].get('wi-fi', 0) < 2:
             continue
 
         max_distance = user_preference.get('Maximum Distance', float('inf'))
@@ -108,14 +109,15 @@ def generate_ranking(user_location: tuple, file_name:str, number: int = 5, user_
         filtered_destinations = destinations
 
     for i, destination in enumerate(filtered_destinations):
-        if destination['label'] == None:
+        if 'label' not in destination or destination['label'] == None:
             to_be_remove.append(i)
             continue
-        score = calculate_score(user_location, destination, property_weights)
-        if 'user_score' in  destination['label']:
-            user_score = destination['label']['user_score']
-            score += (user_score-2)*4
-        destination["score"] = score
+        else:
+            score = calculate_score(user_location, destination, property_weights)
+            if 'user_score' in  destination['label']:
+                user_score = destination['label']['user_score']
+                score += (user_score-2)*4
+            destination["score"] = score
     filtered_destinations = [item for idx, item in enumerate(filtered_destinations) if idx not in to_be_remove]
 
     # Rank destinations by score
@@ -124,6 +126,7 @@ def generate_ranking(user_location: tuple, file_name:str, number: int = 5, user_
 
 
 def update_personal_ranking(address: str, 
+                            location_name: str,
                             user_feedback: dict, 
                             file_name: str, 
                             original_weight: float = 2, 
@@ -140,9 +143,8 @@ def update_personal_ranking(address: str,
     """
     with open(f'ranking_data/{file_name}', 'r') as file:
         destinations = json.load(file)
-    print(address)
     for i in range(len(destinations)):
-        if destinations[i]['address'] == address:
+        if destinations[i]['address'] == address and destinations[i]['name'] == location_name:
             destinations[i]['label']['noisy'] = ((destinations[i]['label']['noisy']*original_weight + user_feedback['noise_level']*new_weight)/(original_weight+new_weight))
             destinations[i]['label']['spacious'] = ((destinations[i]['label']['spacious']*original_weight + user_feedback['spaciousness']*new_weight)/(original_weight+new_weight))
             destinations[i]['label']['user_score'] = user_feedback['general_score']
