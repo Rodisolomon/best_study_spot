@@ -42,10 +42,80 @@ def test_update_personal_rankings(user_location, file_name):
                 print(f"for user feedback with general score{gs}, noise level {ns}, spaciousness score {ss}:")
                 test_single_user_update(user_location, original_ranking, user_feedback, file_name)
 
+def test_filtering_based_on_user_preferences(user_location, file_name):
+    user_preferences_list = [
+        {
+            "Noise Level": "Low",
+            "Space Size": "Small",
+            "Exclusive to Student": False,
+            "I want to collaborate": False,
+            "Must have wi-fi": True,
+            "Maximum Distance": 5.0
+        },
+        {
+            "Noise Level": "Medium",
+            "Space Size": "Medium",
+            "Exclusive to Student": True,
+            "I want to collaborate": True,
+            "Must have wi-fi": False,
+            "Maximum Distance": 2.0
+        },
+        {
+            "Noise Level": "High",
+            "Space Size": "Large",
+            "Exclusive to Student": False,
+            "I want to collaborate": True,
+            "Must have wi-fi": True,
+            "Maximum Distance": 10.0
+        }
+    ]
+    
+    for user_preference in user_preferences_list:
+        print(f"Testing with user preferences: {user_preference}")
+        filtered_ranking = ranking.generate_ranking(user_location, file_name, number=5, user_preference=user_preference)
+        
+        for destination in filtered_ranking:
+            # Check if the destination meets the noise level preference
+            if user_preference["Noise Level"] == "Low" and destination['label']['noisy'] > 1:
+                raise ValueError("Filtered destination does not meet the noise level preference")
+            if user_preference["Noise Level"] == "Medium" and not (2 <= destination['label']['noisy'] <= 3):
+                raise ValueError("Filtered destination does not meet the noise level preference")
+            if user_preference["Noise Level"] == "High" and destination['label']['noisy'] < 4:
+                raise ValueError("Filtered destination does not meet the noise level preference")
+            
+            # Check if the destination meets the space size preference
+            if user_preference["Space Size"] == "Small" and destination['label']['spacious'] > 1:
+                raise ValueError("Filtered destination does not meet the space size preference")
+            if user_preference["Space Size"] == "Medium" and not (2 <= destination['label']['spacious'] <= 3):
+                raise ValueError("Filtered destination does not meet the space size preference")
+            if user_preference["Space Size"] == "Large" and destination['label']['spacious'] < 4:
+                raise ValueError("Filtered destination does not meet the space size preference")
+            
+            # Check if the destination meets the exclusivity to students preference
+            if user_preference["Exclusive to Student"] and not destination['label']['exclusive to student']:
+                raise ValueError("Filtered destination does not meet the exclusivity to students preference")
+            
+            # Check if the destination meets the collaboration preference
+            if user_preference["I want to collaborate"] and not destination['label']['collaborate']:
+                raise ValueError("Filtered destination does not meet the collaboration preference")
+            
+            # Check if the destination meets the Wi-Fi preference
+            if user_preference["Must have wi-fi"] and not destination['label']['wi-fi']:
+                raise ValueError("Filtered destination does not meet the Wi-Fi preference")
+            
+            # Check if the destination meets the maximum distance preference
+            distance = ranking.haversine_distance(user_location[0], user_location[1], destination['latitude'], destination['longitude'])
+            if distance > user_preference["Maximum Distance"]:
+                raise ValueError("Filtered destination does not meet the maximum distance preference")
+
+        print("Filtering test passed for the given user preferences")
+
 
 def test_wrapper():
     test_initial_ranking(user_location, file_name, 5)
     test_update_personal_rankings(user_location, file_name)
+    test_filtering_based_on_user_preferences(user_location, file_name)
+
 
 if __name__ == "__main__":
     test_wrapper()

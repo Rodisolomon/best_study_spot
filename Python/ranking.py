@@ -1,8 +1,4 @@
-import nltk
-from nltk.corpus import wordnet as wn
-import requests
 import pandas as pd
-import openai
 import math
 import json
 import numpy as np
@@ -51,8 +47,52 @@ def calculate_score(location: tuple, place_info: dict, property_weights:dict) ->
     final_score = property_score + distance_penalty
 
     return final_score
+def filter_destination(user_location: tuple, user_preference:dict, destinations: list[dict]) -> list[dict]:
+    """
+    filter the destination based on user preference
+    """
+    filtered_destinations = []
+    for destination in destinations:
+        if destination['label'] is None:
+            continue
 
-def generate_ranking(user_location: tuple, file_name:str, number: int = 5) -> list[dict]:
+        # Check user preferences
+        if user_preference.get('Noise Level'):
+            noise_level = user_preference['Noise Level']
+            if noise_level == 'Low' and destination['label'].get('noisy', 0) > 1:
+                continue
+            if noise_level == 'Medium' and not (2 <= destination['label'].get('noisy', 0) <= 3):
+                continue
+            if noise_level == 'High' and destination['label'].get('noisy', 0) < 4:
+                continue
+
+        if user_preference.get('Space Size'):
+            space_size = user_preference['Space Size']
+            if space_size == 'Small' and destination['label'].get('spacious', 0) > 1:
+                continue
+            if space_size == 'Medium' and not (2 <= destination['label'].get('spacious', 0) <= 3):
+                continue
+            if space_size == 'Large' and destination['label'].get('spacious', 0) < 4:
+                continue
+
+        if user_preference.get('Exclusive to Student') and not destination['label'].get('exclusive to student', False):
+            continue
+
+        if user_preference.get('I want to collaborate') and not destination['label'].get('collaborate', False):
+            continue
+
+        if user_preference.get('Must have wi-fi') and not destination['label'].get('wi-fi', False):
+            continue
+
+        max_distance = user_preference.get('Maximum Distance', float('inf'))
+        distance = haversine_distance(user_location[0], user_location[1], destination['latitude'], destination['longitude'])
+        if distance > max_distance:
+            continue
+
+        filtered_destinations.append(destination)
+    return filtered_destinations
+
+def generate_ranking(user_location: tuple, file_name:str, number: int = 5, user_preference:dict = None) -> list[dict]:
     """
     generate ranking based on user preference and current objective score
     """
@@ -61,7 +101,13 @@ def generate_ranking(user_location: tuple, file_name:str, number: int = 5) -> li
     with open(f'ranking_data/{file_name}', 'r') as file:
         destinations = json.load(file)
     to_be_remove = []
-    for i, destination in enumerate(destinations):
+
+    if user_preference:
+        filtered_destinations = filter_destination(user_location, user_preference, destinations)
+    else:
+        filtered_destinations = destinations
+
+    for i, destination in enumerate(filtered_destinations):
         if destination['label'] == None:
             to_be_remove.append(i)
             continue
@@ -70,12 +116,10 @@ def generate_ranking(user_location: tuple, file_name:str, number: int = 5) -> li
             user_score = destination['label']['user_score']
             score += (user_score-2)*4
         destination["score"] = score
-
-
-    destinations = [item for idx, item in enumerate(destinations) if idx not in to_be_remove]
+    filtered_destinations = [item for idx, item in enumerate(filtered_destinations) if idx not in to_be_remove]
 
     # Rank destinations by score
-    ranked_destinations = sorted(destinations, key=lambda x: x["score"], reverse=True)
+    ranked_destinations = sorted(filtered_destinations, key=lambda x: x["score"], reverse=True)
     return ranked_destinations[:number]
 
 
