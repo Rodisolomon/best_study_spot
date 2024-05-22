@@ -163,7 +163,9 @@ struct StudyView: View {
     }
 }
 
-#Preview {
-    StudyView()
-        .environmentObject(LocationManager())
+struct StudyView_Previews: PreviewProvider {
+    static var previews: some View {
+        StudyView()
+            .environmentObject(LocationManager())
+    }
 }
