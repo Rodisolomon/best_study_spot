@@ -11,18 +11,32 @@ import CoreLocation
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
     @Published var userLocation: CLLocation?
+    private var lastSentLocation: CLLocation?
 
     override init() {
         super.init()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         locationManager.startUpdatingLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        
+        if let lastLocation = lastSentLocation {
+            let distance = location.distance(from: lastLocation)
+            if distance < 10 {
+                return
+            }
+        }
+        
         userLocation = location
-        sendLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let roundedLatitude = round(location.coordinate.latitude * 1000) / 1000
+        let roundedLongitude = round(location.coordinate.longitude * 1000) / 1000
+                
+        userLocation = CLLocation(latitude: roundedLatitude, longitude: roundedLongitude)
+        sendLocation(latitude: roundedLatitude, longitude: roundedLongitude)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

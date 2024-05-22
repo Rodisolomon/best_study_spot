@@ -23,7 +23,6 @@
 		2DDA51302BF53067007A2F6C /* LocationFetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA512F2BF53067007A2F6C /* LocationFetching.swift */; };
 		2DDA51322BF5307C007A2F6C /* Accelerometer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA51312BF5307C007A2F6C /* Accelerometer.swift */; };
 		2DDA51342BF53092007A2F6C /* NoiseLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA51332BF53092007A2F6C /* NoiseLevel.swift */; };
-		2DDA51362BF530A2007A2F6C /* UserFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA51352BF530A2007A2F6C /* UserFeedback.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +63,6 @@
 		2DDA512F2BF53067007A2F6C /* LocationFetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFetching.swift; sourceTree = "<group>"; };
 		2DDA51312BF5307C007A2F6C /* Accelerometer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accelerometer.swift; sourceTree = "<group>"; };
 		2DDA51332BF53092007A2F6C /* NoiseLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseLevel.swift; sourceTree = "<group>"; };
-		2DDA51352BF530A2007A2F6C /* UserFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedback.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +160,6 @@
 				2DDA512F2BF53067007A2F6C /* LocationFetching.swift */,
 				2DDA51312BF5307C007A2F6C /* Accelerometer.swift */,
 				2DDA51332BF53092007A2F6C /* NoiseLevel.swift */,
-				2DDA51352BF530A2007A2F6C /* UserFeedback.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -308,7 +305,6 @@
 				2DD30B922BFD7074003ADA9B /* StudyView.swift in Sources */,
 				2DDA51342BF53092007A2F6C /* NoiseLevel.swift in Sources */,
 				2D5260622BF31E6E0007F11F /* FZFApp.swift in Sources */,
-				2DDA51362BF530A2007A2F6C /* UserFeedback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

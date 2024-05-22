@@ -86,7 +86,9 @@ struct StudyView: View {
                     .padding(.top, 20) // Space between the text and the image
 
                 if let location = locationManager.userLocation {
-                    Text("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
+                    let roundedLatitude:String = String(format: "%0.2f",location.coordinate.latitude)
+                    let roundedLongitude:String = String(format: "%0.2f",location.coordinate.longitude)
+                    Text("Latitude: \(roundedLatitude), Longitude: \(roundedLongitude)")
                 } else {
                     Text("Fetching location...")
                 }

@@ -75,7 +75,7 @@ struct MainTabView: View {
             .tag(Tab.search)
 
             NavigationView {
-                PreferencesView()
+                PreferencesView(selectedTab: $selectedTab)
             }
             .tabItem {
                 Image(systemName: "gearshape.fill")

@@ -229,7 +229,7 @@ struct ResultsView: View {
             Alert(
                 title: Text("Location Selected"),
                 message: Text("You have selected \(ranking.name)"),
-                primaryButton: .default(Text("Go"), action: {
+                primaryButton: .default(Text("LetsGO"), action: {
                     networkManager.sendSelectedAddress(ranking.address) { success in
                         if success {
                             DispatchQueue.main.async {
