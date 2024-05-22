@@ -140,6 +140,7 @@ def update_personal_ranking(address: str,
     """
     with open(f'ranking_data/{file_name}', 'r') as file:
         destinations = json.load(file)
+    print(address)
     for i in range(len(destinations)):
         if destinations[i]['address'] == address:
             destinations[i]['label']['noisy'] = ((destinations[i]['label']['noisy']*original_weight + user_feedback['noise_level']*new_weight)/(original_weight+new_weight))

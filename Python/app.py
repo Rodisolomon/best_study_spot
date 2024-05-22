@@ -59,8 +59,8 @@ def get_crowd_density():
 
 @app.route('/api/feedback', methods=['POST'])
 def submit_feedback():
-    global feedback
     global current_address
+    global feedback
     feedback_data = request.get_json()
     try:
         general_score = int(feedback_data.get('generalScore'))

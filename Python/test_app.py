@@ -86,16 +86,17 @@ class FlaskTestCase(unittest.TestCase):
     def test_submit_feedback(self):
         # Set the current address for feedback submission
         global current_address
-        current_address = "1174 East 55th Street, Chicago"
-
+        current_address = {'address': "abcde"}
+        print(current_address)
         # Test feedback data
         feedback_data = {
-            'generalScore': 4,
-            'noiseLevel': 3,
-            'spaciousness': 2
+            'generalScore': 0,
+            'noiseLevel': 0,
+            'spaciousness': 0
         }
 
         # Submit the feedback
+        addr_response = self.app.post('/api/choosen-address', data=json.dumps(current_address), content_type='application/json')
         response = self.app.post('/api/feedback', data=json.dumps(feedback_data), content_type='application/json')
         self.assertEqual(response.status_code, 200)
         self.assertIn('general_score', response.json)
