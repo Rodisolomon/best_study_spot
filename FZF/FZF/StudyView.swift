@@ -68,6 +68,7 @@ struct StudyView: View {
     @State private var isFocusing: Bool = false
     @State private var secondsElapsed: Int = 0
     @State private var timer: Timer?
+    @State private var showFeedbackView = false
 
     var body: some View {
         NavigationSplitView {
@@ -121,6 +122,10 @@ struct StudyView: View {
                     Text("Not Sensing")
                         .foregroundColor(.green)
                 }
+                
+                NavigationLink(destination: FeedbackView(), isActive: $showFeedbackView) {
+                    EmptyView()
+                }
 
                 Spacer()
             }
@@ -143,6 +148,7 @@ struct StudyView: View {
         timer?.invalidate()
         timer = nil
         stopStudying()
+        showFeedbackView = true  // Set to true to show the feedback view
     }
 
     private func startStudying() {
