@@ -5,8 +5,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
     @Published var userLocation: CLLocation?
     private var lastSentLocation: CLLocation?
-    private let distanceThreshold: CLLocationDistance = 50.0 // 10 meters
-
+    private let distanceThreshold: CLLocationDistance = 10.0
+    
     override init() {
         super.init()
         locationManager.delegate = self
@@ -18,7 +18,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         
-        // Check if the user has moved more than the distance threshold
         if let lastLocation = lastSentLocation {
             let distance = location.distance(from: lastLocation)
             if distance < distanceThreshold {
@@ -60,8 +59,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 return
             }
 
-            self.lastSentLocation = CLLocation(latitude: latitude, longitude: longitude) // Update the last sent location
-            print("Location sent successfully")
+            self.lastSentLocation = CLLocation(latitude: latitude, longitude: longitude) 
         }
         task.resume()
     }

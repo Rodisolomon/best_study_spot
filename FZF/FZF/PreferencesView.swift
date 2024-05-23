@@ -1,9 +1,3 @@
-//
-//  PreferencesView.swift
-//  focus_zone_finder
-//
-//  Created by 天豪刘 on 2024-05-21.
-//
 import SwiftUI
 
 struct PreferencesView: View {

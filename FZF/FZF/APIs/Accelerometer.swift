@@ -1,10 +1,3 @@
-//
-//  Accelerometer.swift
-//  FZF
-//
-//  Created by Tracy on 2024/5/15.
-//
-
 import Foundation
 import CoreMotion
 
@@ -34,7 +27,6 @@ class AccelerometerService {
         let rangeY = (0.01)...(0.06)
         let rangeZ = (0.8)...(1.2)
 
-        // Check if current acceleration values fall within the stable range
         let isStableX = rangeX.contains(abs(acceleration.x))
         let isStableY = rangeY.contains(abs(acceleration.y))
         let isStableZ = rangeZ.contains(abs(acceleration.z))

@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import json
-import ranking  # Make sure this module is properly imported
+import ranking
 location_data = {}
 current_address_name = {}
 feedback = {}
@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 @app.route('/api/location', methods=['POST'])
 def get_location():
-    global location_data  # Access the global variable
+    global location_data  
     data = request.get_json()
     latitude = data.get('latitude')
     longitude = data.get('longitude')
@@ -23,33 +23,42 @@ def get_location():
 @app.route('/api/environment/noise', methods=['POST'])
 def process_noise_data():
     noise_data = request.get_json().get('noise_data', [])
-    
-    with open('noise_data.json', 'a') as f:
-        for entry in noise_data:
-            average_level = entry.get('average_level', 0)
-            highest_level = entry.get('highest_level', 0)
-            lowest_level = entry.get('lowest_level', 0)
-            json.dump({
-                'average_level': average_level,
-                'highest_level': highest_level,
-                'lowest_level': lowest_level
-            }, f)
-            f.write("\n")
-            print(f"Received noise levels: Average: {average_level}, Highest: {highest_level}, Lowest: {lowest_level}")
-    
+    processed_data = []
+
+    for entry in noise_data:
+        average_level = entry.get('average_level', 0)
+        highest_level = entry.get('highest_level', 0)
+        lowest_level = entry.get('lowest_level', 0)
+
+        if average_level == -160 or highest_level == -160 or lowest_level == -160:
+            continue
+        if abs(average_level - highest_level) > 2 or abs(average_level - lowest_level) > 2:
+            continue
+
+        score = db_to_score(average_level)
+        print(score)
+        processed_data.append({
+            'average_level': average_level,
+            'highest_level': highest_level,
+            'lowest_level': lowest_level,
+            'score': score
+        })
+
     return jsonify({
         'status': 'received',
-        'entries': len(noise_data)
+        'entries': len(processed_data),
+        'processed_data': processed_data
     })
 
-@app.route('/api/environment/crowd-density', methods=['GET'])
-def get_crowd_density():
-    # Placeholder: Estimate crowd density using local Wi-Fi and Bluetooth signals
-    crowd_density = {
-        "level": "high", 
-        "count": 50  
-    }
-    return jsonify({'status': 'success', 'crowd_density': crowd_density})
+
+def db_to_score(db_value):
+    if db_value <= -45:
+        return 0
+    elif db_value >= -15:
+        return 5
+    else:
+        return (db_value + 45) * 5 / 30
+
 
 @app.route('/api/feedback', methods=['POST'])
 def submit_feedback():
