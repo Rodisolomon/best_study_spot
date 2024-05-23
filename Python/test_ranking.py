@@ -1,5 +1,6 @@
 import ranking
 import os
+import json
 
 user_location = (41.795187, -87.596741)
 file_name = 'all_places_chicago.json'
@@ -16,21 +17,26 @@ def test_initial_ranking(user_location, file_name, number):
         
 def test_single_user_update(user_location, original_ranking, user_feedback, file_name):
     storage_file_name = 'all_places_chicago_temp.json'
-    ranking.update_personal_ranking(original_ranking[0]['address'], 
+    new_place_info = ranking.update_personal_ranking(original_ranking[0]['address'], 
                             original_ranking[0]['name'],        
                             user_feedback, 
                             file_name,
                             storage_file_name=storage_file_name
                             )
-    new_ranking = ranking.generate_ranking(user_location, storage_file_name)
-    print(f"with user feedback {user_feedback}...")
-    for destination in new_ranking:
-        print(f"{destination['name']} has score {destination['score']}" )
+    with open(f'ranking_data/property_weights.json', 'r') as file:
+        property_weights = json.load(file)
+    new_score = ranking.calculate_score(user_location, new_place_info, property_weights)
+    new_score += (new_place_info['label']['user_score']-2)*4
+    print(f"for {original_ranking[0]['name']}, old score it {new_score}")
+    # new_ranking = ranking.generate_ranking(user_location, storage_file_name)
+    # print(f"with user feedback {user_feedback}...")
+    # for destination in new_ranking:
+    #     print(f"{destination['name']} has score {destination['score']}" )
     os.remove(f"ranking_data/{storage_file_name}")
 
 
 def test_update_personal_rankings(user_location, file_name):
-    score = [0, 3, 5]
+    score = [0, 1, 2, 3, 4, 5]
     original_ranking = ranking.generate_ranking(user_location, file_name)
     for destination in original_ranking:
         print(f"{destination['name']} has score {destination['score']}" )
@@ -40,7 +46,7 @@ def test_update_personal_rankings(user_location, file_name):
                 keys = ['general_score', 'noise_level', "spaciousness"]
                 values = [gs, ns, ss]
                 user_feedback = dict(zip(keys, values))
-                print(f"for user feedback with general score{gs}, noise level {ns}, spaciousness score {ss}:")
+                print(f"for user feedback with general score {gs}, noise level {ns}, spaciousness score {ss}:")
                 test_single_user_update(user_location, original_ranking, user_feedback, file_name)
 
 def test_filtering_based_on_user_preferences(user_location, file_name):
