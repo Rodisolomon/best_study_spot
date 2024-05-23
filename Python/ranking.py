@@ -38,8 +38,11 @@ def calculate_score(location: tuple, place_info: dict, property_weights:dict) ->
     if 'user_score' in property_presence:
         property_presence.pop('user_score')
     # Calculate property score
-    property_score = sum(property_weights[prop] for prop, present in property_presence.items() if present)
-
+    property_score = 0.0
+    for feature, value in property_presence.items():
+        if feature != 'exclusive to student':  # Ignore 'exclusive to student' feature
+            weight = property_weights.get(feature, 0)
+            property_score += value * weight    
     # Apply distance penalty
     distance = haversine_distance(location[0], location[1], place_info['latitude'], place_info['longitude'])
     distance_penalty = -0.1 * distance
@@ -132,7 +135,7 @@ def update_personal_ranking(address: str,
                             original_weight: float = 2, 
                             new_weight: float = 1,
                             storage_file_name = None
-                            ):
+                            ) -> dict:
     """
     based on user feedback, update the ranking with weighted averaging method
     user_feedback_structure: {
@@ -155,5 +158,6 @@ def update_personal_ranking(address: str,
     else:
         with open(f'ranking_data/{file_name}', 'w') as file:
             json.dump(destinations, file)
+    return destinations[i]
 
     
