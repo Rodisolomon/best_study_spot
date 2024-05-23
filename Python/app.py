@@ -22,25 +22,24 @@ def get_location():
 
 @app.route('/api/environment/noise', methods=['POST'])
 def process_noise_data():
-    noise_data = request.get_json()
-    average_level = noise_data.get('average_level', 0)
-    highest_level = noise_data.get('highest_level', 0)
-    lowest_level = noise_data.get('lowest_level', 0)
+    noise_data = request.get_json().get('noise_data', [])
     
     with open('noise_data.json', 'a') as f:
-        json.dump({
-            'average_level': average_level,
-            'highest_level': highest_level,
-            'lowest_level': lowest_level
-        }, f)
-        f.write("\n")
+        for entry in noise_data:
+            average_level = entry.get('average_level', 0)
+            highest_level = entry.get('highest_level', 0)
+            lowest_level = entry.get('lowest_level', 0)
+            json.dump({
+                'average_level': average_level,
+                'highest_level': highest_level,
+                'lowest_level': lowest_level
+            }, f)
+            f.write("\n")
+            print(f"Received noise levels: Average: {average_level}, Highest: {highest_level}, Lowest: {lowest_level}")
     
-    print(f"Received noise levels: Average: {average_level}, Highest: {highest_level}, Lowest: {lowest_level}")
     return jsonify({
         'status': 'received',
-        'average_level': average_level,
-        'highest_level': highest_level,
-        'lowest_level': lowest_level
+        'entries': len(noise_data)
     })
 
 @app.route('/api/environment/crowd-density', methods=['GET'])

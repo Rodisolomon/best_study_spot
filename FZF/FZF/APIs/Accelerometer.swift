@@ -14,18 +14,31 @@ class AccelerometerService {
 
     func startAccelerometerUpdates() {
         if motionManager.isAccelerometerAvailable {
-            motionManager.accelerometerUpdateInterval = 2
+            motionManager.accelerometerUpdateInterval = 1
             motionManager.startAccelerometerUpdates(to: .main) { [weak self] data, error in
                 guard let self = self, let data = data else { return }
-                
-                let isMoving = abs(data.acceleration.x) > 0.5 || abs(data.acceleration.y) > 0.5 || abs(data.acceleration.z) > 1.5
-                print("Acceleration X: \(data.acceleration.x), Y: \(data.acceleration.y), Z: \(data.acceleration.z), Is Moving: \(isMoving)") // Debug print
-                self.motionDetected?(isMoving)
+
+                let stable = self.isStable(acceleration: data.acceleration)
+                //print("Acceleration X: \(data.acceleration.x), Y: \(data.acceleration.y), Z: \(data.acceleration.z), Is Stable: \(stable)")
+                self.motionDetected?(stable)
             }
         }
     }
 
     func stopAccelerometerUpdates() {
         motionManager.stopAccelerometerUpdates()
+    }
+
+    private func isStable(acceleration: CMAcceleration) -> Bool {
+        let rangeX = (0.01)...(0.06)
+        let rangeY = (0.01)...(0.06)
+        let rangeZ = (0.8)...(1.2)
+
+        // Check if current acceleration values fall within the stable range
+        let isStableX = rangeX.contains(abs(acceleration.x))
+        let isStableY = rangeY.contains(abs(acceleration.y))
+        let isStableZ = rangeZ.contains(abs(acceleration.z))
+
+        return isStableX && isStableY && isStableZ
     }
 }
